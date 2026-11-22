@@ -1,0 +1,59 @@
+--- a/TrianglePointwise.lean
++++ b/TrianglePointwise.lean
+@@ -8,7 +8,12 @@
+ -/
+ import Mathlib.Analysis.Calculus.MeanValue
+ import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
+-import Mathlib.Tactic
++import Mathlib.Tactic.FieldSimp
++import Mathlib.Tactic.GCongr
++import Mathlib.Tactic.Linarith
++import Mathlib.Tactic.NormNum
++import Mathlib.Tactic.Positivity
++import Mathlib.Tactic.Ring
+ import Cryptids.Semantics.Riemann.WeightedStieltjes
+ 
+ namespace CubePrime.Pointwise
+@@ -35,10 +40,12 @@
+ lemma hasDerivAt_fz (g : ℝ) {t : ℝ} (ht : 0 < t) : HasDerivAt (fz (rhoF g)) (f1 (rhoF g) t) t := by
+   have h0 := rhoF_ne g
+   have h1 : rhoF g + 1 ≠ 0 := fun h => rhoF_ne' g (by linear_combination h)
+-  have := (hasDerivAt_ofReal_cpow_const' ht.ne' (rhoF_ne' g)).div_const (rhoF g)
+-  convert this using 1
+-  · funext y; unfold fz; field_simp
+-  · unfold f1; rfl
++  have he : fz (rhoF g) = fun y : ℝ => (y : ℂ) ^ (rhoF g + 1) / (rhoF g + 1) / rhoF g := by
++    funext y
++    unfold fz
++    field_simp
++  rw [he]
++  exact (hasDerivAt_ofReal_cpow_const' ht.ne' (rhoF_ne' g)).div_const (rhoF g)
+ 
+ lemma hasDerivAt_f1 (g : ℝ) {t : ℝ} (ht : 0 < t) :
+     HasDerivAt (f1 (rhoF g)) ((t : ℂ) ^ (rhoF g - 1)) t := by
+--- a/TriangleNumerics.lean
++++ b/TriangleNumerics.lean
+@@ -1,6 +1,11 @@
+ import Mathlib.Analysis.Complex.ExponentialBounds
+ import Mathlib.Analysis.Real.Pi.Bounds
+-import Mathlib.Tactic
++import Mathlib.Tactic.FieldSimp
++import Mathlib.Tactic.GCongr
++import Mathlib.Tactic.Linarith
++import Mathlib.Tactic.NormNum
++import Mathlib.Tactic.Positivity
++import Mathlib.Tactic.Ring
+ 
+ /-! Arithmetic budget for the triangular explicit formula. This file does not
+ establish that the analytic errors actually meet the proposed component bounds. -/
+--- a/finite/PrattCore.lean
++++ b/finite/PrattCore.lean
+@@ -5,7 +5,7 @@
+ elementary kernel lemmas and adding a batched checker.
+ -/
+ import Mathlib.NumberTheory.LucasPrimality
+-import Mathlib.Tactic
++import Mathlib.Tactic.Ring
+ 
+ namespace CubePrime.Pratt
+ /-- Binary modular power with fuel. -/
