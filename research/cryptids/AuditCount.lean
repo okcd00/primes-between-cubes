@@ -1,0 +1,5 @@
+import Cryptids.Semantics.Riemann.VonMangoldtCount
+
+open ConjectureMachines.Semantics.Riemann
+#print axioms VonMangoldtCount.weightedZeroCountingFunction_le_sixteen_fifths
+#check VonMangoldtCount.weightedZeroCountingFunction_le_sixteen_fifths

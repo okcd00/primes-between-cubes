@@ -1,0 +1,11 @@
+--- a/Cryptids/Semantics/Riemann/VonMangoldtCount.lean
++++ b/Cryptids/Semantics/Riemann/VonMangoldtCount.lean
+@@ -1228,7 +1228,7 @@
+ theorem integrableOn_indicator_of_continuousOn {T γ U : ℝ} (hγ : T < γ)
+     {g' : ℝ → ℝ} (hcont : ContinuousOn g' (Set.Icc T U)) :
+     IntegrableOn ((Set.Ici γ).indicator g') (Set.Ioc T U) := by
+-  rw [integrableOn_indicator_iff measurableSet_Ici.nullMeasurableSet]
++  rw [MeasureTheory.integrableOn_indicator_iff measurableSet_Ici]
+   have hinter : Set.Ici γ ∩ Set.Ioc T U = Set.Icc γ U := by
+     ext t
+     simp only [Set.mem_inter_iff, Set.mem_Ici, Set.mem_Ioc, Set.mem_Icc]
