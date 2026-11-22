@@ -49,3 +49,28 @@ both exact target declarations and RH must pass the three-axiom audit.
 Then export all three roots and require both independent exact goal matches
 against the isolated challenge and real kernel checks. These are separate
 gates from the successful conditional build and typed consumer export.
+
+## Offline handoff
+
+`verify-offline.sh` uses already staged local files. It does not download,
+install, upload, or use a trusted bypass. Set `CON_LECHE_SOURCE` to a clean
+checkout of the pinned checker built in the prepared environment; use a
+small `CUBE_VERIFY_JOBS` (default 1). Keep the input directory read-only
+while running. All modes use a new output directory.
+
+```bash
+bash verify-offline.sh preflight bridge.ndjson /large/disk/solution.ndjson ./preflight-results
+bash verify-offline.sh discharge bridge.ndjson /large/disk/solution.ndjson ./discharge-results
+bash verify-offline.sh match-final final.ndjson challenge.ndjson ./matched-results
+```
+
+Preflight verifies input hashes and roles and does **not replay**. Discharge
+uses the exact full MIT export and checks that only RH is justified. Match-final
+requires the actual export from the native `Main` integration and checks both
+goals against the isolated specification. Do not run match-final on the bridge.
+The small `summary.txt` is designed for paste-back; the full checker log
+stays on the machine. The full provider and final solution modes have not
+been run here. Local checks covered shell syntax and invalid-mode, shared-file,
+and unavailable-checker rejection. The known large storage and memory
+requirements of the actual provider remain; allocating one worker is not a
+promise that the computation fits.
