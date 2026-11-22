@@ -28,6 +28,9 @@ lake build \
   +Cryptids.Semantics.Riemann.WeightedStieltjes:olean \
   +Cryptids.Semantics.Riemann.DigammaBinet:olean \
   +Cryptids.Semantics.Riemann.HorizontalBounds:olean
-for f in AuditCount AuditContour TriangleIdentity TriangleNumerics TriangleMass WeightedHeadTail; do
+for f in AuditCount AuditContour; do
   lake env lean "$f.lean"
+done
+for f in TriangleIdentity TriangleNumerics TriangleMass WeightedHeadTail TriangleContour TrianglePointwise TriangleResidues CubeTriangleLarge; do
+  lake env lean -o ".lake/build/lib/lean/$f.olean" "$f.lean"
 done

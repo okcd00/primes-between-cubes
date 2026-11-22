@@ -1,4 +1,4 @@
-# Cryptids route: verified components, not a complete proof
+# Cryptids route: checked large range under RH
 
 The local probe pins the Apache-2.0 [Cryptids source](https://github.com/google-deepmind/cryptids/tree/3647718b5df22e1a61462dec0376bd204526285a) at `3647718b5df22e1a61462dec0376bd204526285a`. It brings just five source modules into Lean `4.35.0-rc3` with Mathlib `c55e6e786f49471c72fbddbec5415808896aec1e`. The checked compatibility change disambiguates one indicator-integrability lemma and uses the measurable-set argument that rc3 expects. No theorem statement is changed. The original repo uses rc4.
 
@@ -6,6 +6,13 @@ Run `bash research/cryptids/replay.sh /path/to/cryptids-clone` from the project.
 
 **What passed.** The multiplicity-weighted count for both signs is at most `(16/5) T log T + (11/5) T` at `T ≥ 6`, conditional on ordinary Mathlib RH. The required smoothed contour, zero-free height, vertical bound and weighted tail declarations build. The new lemmas verify the finite head–tail split, the three-point cancellation of the linear residue, the triangular arithmetic sum that vanishes at both endpoints, and the arithmetic budgets. Audited declarations use only Lean's standard axioms; the ordinary RH premise has not been discharged.
 
-**Candidate assembly.** Set `a=(m−1)^3`, `b=m^3`, `x=(a+b)/2`, `h=(b−a)/2`, `T=2m`. For `m ≥ 65536`, the intended pointwise estimates are `h²/√a` below the cutoff and `4 b^(3/2) / |Im ρ|²` above it. With the checked zero count they would cost at most `(14 log(2m)+16) h²/√m`. The Mathlib bound for non-prime prime powers is `2 √b log b`, weighted by at most h. The combined arithmetic margin for these terms is `15h²/16`. The vertical margin is `h²/60`; the horizontal and truncation errors must use one common good height and the second difference costs at most `2h` times the upstream first-difference error bound, not h. The independent mathematical review confirmed this factor and the strict endpoint argument; it did not review a completed Lean assembly.
+**Checked assembly.** Set `a=(m−1)^3`, `b=m^3`, `x=(a+b)/2`, `h=(b−a)/2`, `T=2m`. For `m ≥ 65536`, the pointwise estimates are `h²/√a` below the cutoff and `4 b^(3/2) / |Im ρ|²` above it. With the checked zero count they cost at most `(14 log(2m)+16) h²/√m`. The Mathlib bound for non-prime prime powers is `2 √b log b`, weighted by at most h. The combined arithmetic margin for these terms is `15h²/16`. The vertical margin is `h²/60`; the horizontal and truncation errors must use one common good height and the second difference costs at most `2h` times the upstream first-difference error bound, not h. The independent mathematical review confirmed this factor and the strict endpoint argument; another reviewer independently replayed the exact large-range Lean files.
 
-**Still open.** Prove and connect the pointwise bounds, contour estimate and large-cube theorem in Lean, certify the uncovered finite range, and compose on one compatible Lean/Mathlib stack with Alpöge's verified upstream RH. The alternative whole-function estimate in the pinned Cryptids source has coefficient 7/8, not the sharper coefficient on the documentation landing page. This evidence does not replace the manuscript on main or establish final acceptance.
+**Still open.** Certify the uncovered finite range, and compose on one compatible Lean/Mathlib stack with Alpöge's verified upstream RH. The alternative whole-function estimate in the pinned Cryptids source has coefficient 7/8, not the sharper coefficient on the documentation landing page. This evidence does not replace the manuscript on main or establish final acceptance.
+
+`CubePrime.prime_between_large_nat_cubes_of_RH` is now checked for every natural `n ≥ 65535`,
+giving a prime strictly between `n^3` and `(n+1)^3` from ordinary RH. It uses only the
+three standard Lean axioms in addition to its explicit premise. The remaining finite range is
+`1 ≤ n ≤ 65534`, and neither that range nor the upstream toolchain link is part of this commit.
+The pointwise zero estimate adapts an isolated Apache-licensed section of GoldbachLean; see
+`HUBBARD-LICENSE` and `HUBBARD-NOTICE`.
