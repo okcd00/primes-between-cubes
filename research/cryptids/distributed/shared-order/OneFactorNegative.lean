@@ -9,3 +9,10 @@ example : checkRun 16777259 65533 [(281449458497869, 198221372019760)] = false :
 example : certOK 5 341 4 = false := by decide +kernel
 -- A composite root could pass a Boolean check; soundness never assumes it prime.
 example : knownPrimeOK 4 [] = false := by decide +kernel
+-- Confirm the root-primality gate is essential, not merely a documentation claim.
+example : certOK 4 15 2 = true := by decide +kernel
+example : ¬ Nat.Prime 15 := by decide +kernel
+-- Exercise the Lucas path itself, including missing proof and wrong endpoint.
+example : checkHybridBatch 16777259 1 [⟨3,2,[(2,1)]⟩] [(3,none)] = true := by decide +kernel
+example : checkHybridBatch 16777259 1 [] [(3,none)] = false := by decide +kernel
+example : checkHybridBatch 16777259 2 [⟨3,2,[(2,1)]⟩] [(3,none)] = false := by decide +kernel

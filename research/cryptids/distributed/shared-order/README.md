@@ -81,3 +81,14 @@ all `1 <= n < 65535`. Its generated `All.lean` had SHA-256
 `580ec68b9ac559d4a8b24926c382d4d709e9c11be3a04422eebdaa84501ecf01`.
 This is not a fresh all-hybrid replay; the proposed conditional wrapper and
 the external RH integration have separate acceptance gates.
+
+The updated runner verifies the Lean executable/version and available shared-library
+digest, re-generates and compares all source bytes from the pinned JSON, and binds
+resume receipts to compiled group byte hashes plus the root and core object/manifest
+hashes. Prefix groups remain legacy local checkpoints with source-only receipts,
+and neither set of receipts independently attests the entire imported environment.
+For a clean audit choose prefix 0 and a fresh build directory with prepared pinned
+dependencies. `CUBE_DIAGNOSTIC_GROUP=Group255` runs only that group, not the aggregate;
+it was used for the successful digest/resume and tainted-receipt rebuild controls.
+See [independent comparison](./INDEPENDENT-COMPARE.md) for the separate inert-kernel
+result on both providers (and for the larger shared-order export).

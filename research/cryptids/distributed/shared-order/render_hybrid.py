@@ -7,7 +7,6 @@ from pathlib import Path
 from render_one_factor import ROOT, root_certs, witness
 
 EXPECTED = "fc3053b39f17074f257eda1798041a8b33c7eaa2cb72c611c7764bef9a599b1d"
-DIR = Path("FiniteHybrid")
 
 
 def fmt_cert(rows):
@@ -29,7 +28,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("lucas_json",type=Path)
     ap.add_argument("--from-group",type=int,default=0)
+    ap.add_argument("--output",type=Path,default=Path("FiniteHybrid"))
     args = ap.parse_args()
+    out = args.output
     if not 0 <= args.from_group < 256:
         ap.error("from-group must be 0-255; earlier groups use the stock 256-group renderer")
     raw = args.lucas_json.read_bytes()
@@ -37,10 +38,10 @@ def main():
         raise ValueError("wrong baseline input")
     data = json.loads(raw)
     by_p = {p:(p,a,fs) for p,a,fs in data["certificates"]}
-    DIR.mkdir()
+    out.mkdir()
     rc = {}
     root_certs(ROOT,rc)
-    write(DIR/"Root.lean",["import OneFactorCore","namespace CubePrime.OneFactor",
+    write(out/"Root.lean",["import OneFactorCore","namespace CubePrime.OneFactor",
          "set_option maxRecDepth 8192",
          f"theorem sharedRoot : Nat.Prime {ROOT} := ",
          f"  knownPrimeOK_sound (certs := [{fmt_cert((p,a,fs) for p,(a,fs) in sorted(rc.items()))}]) (by decide +kernel)",
@@ -87,10 +88,10 @@ def main():
         theorem = f"hybrid_{group:03d}"
         lines += [f"theorem {theorem} : ∀ n : ℕ, {lo} ≤ n → n < {hi} → CubeAt n :=",
                   "  " + splice(parts), "end CubePrime.OneFactor"]
-        write(DIR/f"{name}.lean",lines)
+        write(out/f"{name}.lean",lines)
         mods.append(f"FiniteHybrid.{name}")
         names.append(theorem)
-    write(DIR/"All.lean",[*(f"import {mod}" for mod in mods),
+    write(out/"All.lean",[*(f"import {mod}" for mod in mods),
           "namespace CubePrime.OneFactor", "open CubePrime.Pratt", "set_option maxRecDepth 8192",
           "theorem finite_cube_range : ∀ n : ℕ, 1 ≤ n → n < 65535 → CubeAt n :=",
           "  " + splice(names), "#print axioms finite_cube_range","end CubePrime.OneFactor"])
