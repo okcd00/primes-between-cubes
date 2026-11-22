@@ -24,7 +24,7 @@ test -f "$cube/.lake/build/lib/lean/FinitePratt/All.olean"
 export LEAN_ABORT_ON_PANIC=1
 cd "$cube"
 lake env lean -j1 -o .lake/build/lib/lean/FullCubesConditional.olean FullCubesConditional.lean
-lake env bash -c 'LEAN_PATH="$1:$LEAN_PATH" lean -j1 --tstack=400000 --root="$2" -o "$3" "$2/CubeWithoutHypotheses.lean"' _ \
+lake env bash -c 'LEAN_PATH="$1:$LEAN_PATH" python3 "$2/measure-lean-import.py" lean -j1 --tstack=400000 --root="$2" -o "$3" "$2/CubeWithoutHypotheses.lean"' _ \
   "$rh/.lake/build/lib/lean" "$here" "$cube/.lake/build/lib/lean/CubeWithoutHypotheses.olean" \
   2>&1 | tee cube-native-axioms.log
 python3 "$here/audit-axioms.py" cube-native-axioms.log

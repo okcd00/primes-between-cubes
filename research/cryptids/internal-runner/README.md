@@ -58,3 +58,10 @@ LEAN_BIN="$LEAN_BIN" RUN_DIR=/有空间的目录/cubes-run \
 `58afe6f4b8167e8945f7c82954b0fc477541f9d0`；Mathlib 提交 `0df444a360eaa60ab8c11dca51a86af692955474`。
 这些状态都不替代将解答导出后用独立内核重放。
 目录内的 `CubeChallenge.lean` / `comparator.json` 是后续独立重放的隔离题面和配置，不会被此脚本导入或当作证明；摘要明确记录 `independent_export_replay=NOT_RUN`。
+
+
+`--probe` 还会只读报告 Linux 的单进程 VM 映射上限与
+虚拟内存限制。大规模 `import Main` 对文件映射有额外需求，
+换用较大内存并不能自动解除映射限制。`RESOURCE` 行记录
+实际 Lean 子进程的映射数、文件/匿名内存及 RSS 峰值；采样值
+不是极限或是否能运行的保证。脚本不改任何系统设置。

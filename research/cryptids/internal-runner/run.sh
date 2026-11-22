@@ -48,6 +48,12 @@ finish() {
 trap finish EXIT
 note() { printf '%s\n' "$*" | tee -a "$summary"; }
 fail() { note "preflight_reason=$1"; exit 2; }
+if [[ -r /proc/sys/vm/max_map_count ]]; then
+  read -r map_limit < /proc/sys/vm/max_map_count
+  [[ "$map_limit" =~ ^[0-9]+$ ]] && note "host_max_vm_mappings=$map_limit"
+fi
+note "host_vmem_limit_kib_or_unlimited=$(ulimit -v)"
+
 step() {
   stage=$1
   shift
@@ -57,6 +63,9 @@ step() {
   (set -e; "$@") > "$run_root/logs/$stage.log" 2>&1
   rc=$?
   set -e
+  if [[ $stage == native_composition ]]; then
+    grep '^RESOURCE ' "$run_root/logs/$stage.log" >> "$summary" || true
+  fi
   if [[ $rc != 0 ]]; then
     note "$stage=FAIL"
     if [[ $stage == cube_finite ]]; then
