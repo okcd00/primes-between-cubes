@@ -185,6 +185,22 @@ materialize() {
 }
 step cube_setup materialize
 
+prepare_finite_sources() {
+  local candidate=$1 stage
+  # Publish the generated directory atomically. Completed layouts remain reusable.
+  # A newly built candidate file is already checked against DATA_SHA above.
+  if [[ ! -d FinitePratt ]]; then
+    stage=$(mktemp -d "$cube/.finite-render.XXXXXX")
+    python3 -B render_pratt_range.py "$candidate" "$stage/FinitePratt"
+    test -f "$stage/FinitePratt/All.lean"
+    [[ $(find "$stage/FinitePratt" -maxdepth 1 -name 'Group*.lean' | wc -l) -eq 64 ]]
+    mv -T "$stage/FinitePratt" FinitePratt
+    rmdir "$stage"
+  fi
+  test -f FinitePratt/All.lean
+  [[ $(find FinitePratt -maxdepth 1 -name 'Group*.lean' | wc -l) -eq 64 ]]
+}
+
 finite_data() {
   cd "$cube"
   # The pinned Python sources are used directly, without pip or a package index.
@@ -197,8 +213,7 @@ finite_data() {
   fi
   printf '%s  %s\n' "$DATA_SHA" "$candidate" | sha256sum -c -
   python3 -B verify_cube_witnesses.py "$candidate"
-  python3 -B render_pratt_range.py "$candidate" FinitePratt
-  [[ $(find FinitePratt -maxdepth 1 -name 'Group*.lean' | wc -l) -eq 64 ]]
+  prepare_finite_sources "$candidate"
 }
 step cube_data finite_data
 
