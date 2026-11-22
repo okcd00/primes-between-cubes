@@ -1,0 +1,183 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={A Lean Formalization of the RH-Conditional Prime Between Consecutive Cubes},pdfauthor={Dian Chen}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\title{A Lean Formalization of the RH-Conditional\\ Prime Between Consecutive Cubes}
+\author{Dian Chen}
+\date{}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Assuming the ordinary Riemann hypothesis, every open interval between consecutive positive integer cubes contains a prime. This consequence was already proved by Caldwell and Cheng. We formalize an explicit proof in Lean 4 by dividing at \(n=65\,535\). For larger indices, a triangular weight and an explicit smoothed contour estimate give a positive prime contribution. For the \(65\,534\) smaller indices, the kernel checks exact prime witnesses using modular-order certificates that share a table of \(41\) auxiliary primes. The assembled Lean theorem takes the Riemann hypothesis as an explicit premise; no unconditional conclusion is claimed.
+\end{abstract}
+
+\section{Statement and contribution}
+
+\begin{theorem}\label{thm:main}
+Assume the Riemann hypothesis for the Riemann zeta function. Then for every integer \(n\ge 1\) there is a prime \(p\) with \(n^3<p<(n+1)^3\).
+\end{theorem}
+
+The conclusion under this hypothesis is due to Caldwell and Cheng \cite[Lemma~5]{cc}; this is not a new prime-gap theorem. The contribution here is its end-to-end formalization, with an explicit analytic cutoff and a finite certificate scheme that reuses auxiliary primality proofs. Short-interval smoothing follows Dudek, Greni\'e and Molteni \cite{dgm}. The analytic development reuses zero-counting and contour bounds from Cryptids \cite{cryptids}. On the computational side, using prime candidates with a large known prime factor of \(p-1\) is not new; compare the progression search of Johnston et al.\ \cite[Section~2]{jstw}. The implementation here chooses auxiliary primes by ranges of cube indices and checks the resulting witnesses through one certified table.
+
+\section{The analytic range}
+
+Put \(m=n+1\), \(a=(m-1)^3\), \(b=m^3\), \(x=(a+b)/2\), and \(h=(b-a)/2\). Write \(\Lambda\) for the von Mangoldt function and \(t_+=\max(0,t)\). For
+\(\psi_1(y)=\sum_{k\ge1}\Lambda(k)(y-k)_+\), taking the second difference yields
+\begin{equation}\label{eq:triangle}
+\psi_1(x+h)-2\psi_1(x)+\psi_1(x-h)
+ = \sum_{k\ge1}\Lambda(k)(h-|k-x|)_+ .
+\end{equation}
+Indeed, the second difference of each summand has triangular weight, vanishing at both endpoints. All prime powers of exponent at least two contribute at most
+\begin{equation}\label{eq:budget}
+B=2h\sqrt b\log b.
+\end{equation}
+To see this, sum over \(p\le\sqrt b\). For each such prime \(p\), the number of powers at most \(b\) is bounded by \(\log b/\log p\); each contributes at most \(h\log p\). This already gives the smaller bound \(h\sqrt b\log b\); we retain the looser budget used by the formal proof.
+
+Under RH, use the smoothed contour formula from \cite{cryptids} at all three points with the \emph{same} admissible height \(U\ge T=2m\). Write the resulting second difference as \(h^2-Z_U+R_U\), with the affine residue canceled. For a zero \(\rho=1/2+i\gamma\), its summand in \(Z_U\), before multiplicity, is the second difference of \(y^{\rho+1}/(\rho(\rho+1))\). The second derivative is \(y^{\rho-1}\). Integrating it against the triangle bounds this difference by \(h^2/\sqrt a\); direct estimation of the three terms also bounds it by \(4b^{3/2}/|\gamma|^2\) for \(\gamma\ne0\). The formal
+pointwise argument adapts a fragment of Hubbard's GoldbachLean \cite{hubbard}.
+
+Let \(N(t)\) count nontrivial zeros with \(|\operatorname{Im}\rho|\le t\), with both signs and multiplicities. The bound used in Lean is
+\[
+N(t)\le (16/5)t\log t+(11/5)t\qquad (t\ge6).
+\]
+At ordinates up to \(T\), use the second-derivative bound. Beyond \(T\), partial summation gives
+\(\sum_{|\gamma|>T}|\gamma|^{-2}\le 2\int_T^\infty N(t)t^{-3}\,dt\), where the sum includes multiplicities. Dropping the upper truncation in this bound gives
+\begin{equation}\label{eq:zeros}
+|Z_U|\le
+ \frac{h^2}{\sqrt a}\bigl((16/5)T\log T+(11/5)T\bigr)
+ +4b^{3/2}\,\frac{(32/5)\log T+54/5}{T}.
+\end{equation}
+The common height can be chosen so that
+\begin{equation}\label{eq:remainder}
+|R_U|\le \frac{128\cdot87}{2\pi}\,b^{3/4}+\frac{h^2}{60}.
+\end{equation}
+Here the first term comes from the left vertical bound at real part \(-1/4\); the horizontal and truncation terms together are at most \(h^2/60\). In the formal derivation the three-point remainder is bounded by \(2h\) times the upstream first-difference error budget. The common height allows a single truncated zero sum to be estimated as in \eqref{eq:zeros}.
+
+For \(m\ge65\,536\), we have \(h\ge(7/5)m^2\) and \(\sqrt a\ge(9/10)m^{3/2}\). Substituting \(b=m^3\) and \(T=2m\) into \eqref{eq:budget} and \eqref{eq:zeros} gives
+\[
+|Z_U|+B
+ \le \frac{h^2}{\sqrt m}
+ \bigl(14\log(2m)+16+(30/7)\log m\bigr)
+ \le \frac{15}{16}h^2 .
+\]
+Each of the terms after division by \(\sqrt m\) decreases on this range. At \(m=2^{16}\), the last inequality follows using \(\log 2<7/10\). Also, the vertical term in \eqref{eq:remainder} is at most \(h^2/60\): divide by \(h^2\), use \(h\ge(7/5)m^2\) and \(\pi>3\), and evaluate the resulting decreasing bound at \(m=2^{16}\). Thus \(|R_U|\le h^2/30\). The mass in \eqref{eq:triangle} exceeds \(B\) by at least \(7h^2/240>0\), so a prime contributes in \((a,b)\). This covers \(n\ge65\,535\).
+
+\section{The finite range}
+
+\begin{lemma}\label{lem:cert}
+Let \(r\) be prime and suppose \(1<p<r^2\). If some integer \(v\ge1\) satisfies
+\[
+v^r\equiv1\pmod p,\qquad \gcd(v-1,p)=1,
+\]
+then \(p\) is prime.
+\end{lemma}
+\begin{proof}
+If \(p\) were composite, its least prime divisor \(q\) would satisfy \(q^2\le p\). The class of \(v\) modulo \(q\) is a unit and is not \(1\). Its order divides \(r\), hence equals \(r\), and also divides \(q-1\). Therefore \(q\ge r+1\), contradicting \(q^2\le p<r^2\).
+\end{proof}
+
+The witness search first uses the single auxiliary prime \(r=16\,777\,259\), finding witnesses for \(54\,844\) intervals. For each remaining \(n\), group the indices by \(2^j\le n<2^{j+1}\) and try up to five odd primes above the square root of the bucket's upper cube, excluding the already tried prime. Candidate witnesses \(p\) are sought in the progression \(p\equiv1\pmod r\); the checker does not rely on the search heuristic. The resulting data contain one triple \((p,v,r)\) per index, using \(41\) distinct auxiliary primes. For instance \(n=4\) has the witness \((83,4,41)\).
+
+The auxiliary table is certified once by recursive Lucas certificates, starting with \(2\). For each row Lean checks membership of \(r\) in that table, the exact arithmetic of Lemma~\ref{lem:cert}, and both strict cube inequalities. The row checks use kernel reduction, not a native computation oracle. The \(256\) groups are joined by range lemmas to cover exactly \(1\le n<65\,535\); no theorem about the search generator is assumed.
+
+Table~\ref{tab:pilot} compares the row checker against separate Lucas certificates on one matched \(256\)-interval group. The two runs prove the same statement using different witnesses, with shared dependencies precompiled. These are single local observations, not an end-to-end or independent-kernel speedup claim.
+
+\begin{table}[ht]
+\centering
+\caption{One stock Lean compilation observation for \(5889\le n<6145\).}
+\label{tab:pilot}
+\begin{tabular}{lrrr}
+\toprule
+Certificate & Wall time (s) & Peak child RSS (KiB) & Group object (bytes)\\
+\midrule
+Lucas baseline & 34.450 & 3\,206\,896 & 8\,386\,336\\
+Adaptive shared order & 2.157 & 2\,192\,880 & 1\,009\,016\\
+\bottomrule
+\end{tabular}
+\par\smallskip
+{\small The adaptive root table adds a shared \(115\,448\)-byte object.}
+\end{table}
+
+\section{Formal statement and verification scope}
+
+The finite and analytic branches compose to give Theorem~\ref{thm:main}.
+With the prime predicate expanded, the checked declaration
+\texttt{CubePrime.primeBetweenCubes\_of\_RH} states:
+\begin{quote}
+\small
+\(\texttt{RiemannHypothesis} \to
+  \forall n:\mathbb{N},\; 1\le n\to
+  \exists p:\mathbb{N},\;
+  \texttt{Nat.Prime}\;p\land n^3<p\land p<(n+1)^3.\)
+\end{quote}
+The aggregate finite theorem, the large-range implication, and their
+composition passed the stock Lean 4.33.1 kernel using Mathlib revision
+\texttt{0df444a360eaa60ab8c11dca51a86af692955474}. The composed
+declaration's axiom report contains only \texttt{propext},
+\texttt{Classical.choice}, and \texttt{Quot.sound}; RH is a premise, not an
+additional Lean axiom.
+An independent replay using con-leche (revision \texttt{5dc36dc1}) also checked the
+exported proof and matched it against a separate Mathlib-only challenge.
+It verified both the named-predicate declaration and the expanded
+statement above (66\,359 solution declarations). Both statements retain
+the RH premise.
+
+The canonical finite witness stream consists of one compact JSON array
+\texttt{[n,p,v,r]} per row (terminated by a newline), sorted by increasing \(n\). Its
+SHA-256 is
+\begin{quote}
+\small\ttfamily 846850f65b67ab03d5d1b2bbfe3a2dd5dc31c1ff0a6a09d59320c4078781119c.
+\end{quote}
+The ancillary replay companion contains the Lean development and a
+deterministic generator for the witness stream. The existence of a separate formal development for RH \cite{rhcheck}
+is not used to discharge the premise here; this version does not report an
+integrated, premise-free cube-prime theorem.
+
+\paragraph{Use of generative AI.}
+OpenAI Dot was used to develop and debug Lean code, construct and check
+certificate-generation and replay scripts, and help draft and edit the
+manuscript. The mathematical verification claims above refer to kernel checks,
+not to assessments by the AI tool.
+
+\begin{thebibliography}{9}
+
+\bibitem{cc}
+C.~K. Caldwell and Y.~Cheng.
+\newblock Determining Mills' constant and a note on Honaker's problem.
+\newblock \emph{J. Integer Seq.}, 8 (2005), Article 05.4.1.
+\newblock \href{https://cs.uwaterloo.ca/journals/JIS/VOL8/Caldwell/caldwell78.html}{Journal record}.
+
+\bibitem{dgm}
+A.~W. Dudek, L.~Greni\'e, and G.~Molteni.
+\newblock Primes in explicit short intervals on RH.
+\newblock \emph{Int. J. Number Theory}, 12 (2016), 1391--1407.
+\newblock \href{https://arxiv.org/abs/1503.05403}{arXiv:1503.05403}.
+
+\bibitem{cryptids}
+Google DeepMind.
+\newblock \emph{Cryptids}, Lean source for explicit zero counting and smoothed
+  contour estimates.
+\newblock Revision
+\href{https://github.com/google-deepmind/cryptids/tree/3647718b5df22e1a61462dec0376bd204526285a}{\texttt{3647718b5df22e1a61462dec0376bd204526285a}}.
+
+\bibitem{hubbard}
+S.~Hubbard.
+\newblock \emph{GoldbachLean}, \texttt{SigmaTrudgian.lean} in the Dudek entry.
+\newblock Revision
+\href{https://github.com/sthubbar/goldbach-lean/tree/93b86c05bb441be2ac0b3f06cc4c8624f8e8d0eb/entries/dudek2014}{\texttt{93b86c05bb441be2ac0b3f06cc4c8624f8e8d0eb}}.
+
+\bibitem{jstw}
+D.~R. Johnston, J.~P. Sorenson, S.~N. Thomas, and J.~E. Webster.
+\newblock Primes and almost primes between cubes.
+\newblock \href{https://arxiv.org/abs/2601.15564v2}{arXiv:2601.15564v2}, 2026.
+
+\bibitem{rhcheck}
+A.~Sutherland.
+\newblock Verification files for the Lean proof of the Riemann hypothesis.
+\newblock \href{https://math.mit.edu/~drew/grh/}{MIT verification page}, 2026.
+
+\end{thebibliography}
+\end{document}
