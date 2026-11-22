@@ -12,6 +12,7 @@ readonly RH_SHA=58afe6f4b8167e8945f7c82954b0fc477541f9d0
 readonly CRYPT_SHA=3647718b5df22e1a61462dec0376bd204526285a
 readonly SYMPY_SHA=16fa855354eb7bcabd3fe10993841e03b1382692
 readonly MPMATH_SHA=b5c04506ef0cd4a1f1213f8389ee21c9c3551582
+readonly WIDGETS_SHA=4be2e3d5087eeb272cf5a8853b8f9dd025ef5957
 readonly DATA_SHA=fc3053b39f17074f257eda1798041a8b33c7eaa2cb72c611c7764bef9a599b1d
 
 case ${1:---run} in
@@ -82,6 +83,15 @@ toolbin=$(realpath "$LEAN_BIN")
 v=$(cd "$run_root"; "$toolbin/lean" --version 2>/dev/null) || fail lean_version_failed
 [[ "$v" == *"version 4.33.1,"*"$LEAN_SHA"* ]] || fail wrong_lean_toolchain
 export PATH="$toolbin:$PATH"
+# Fail closed on any unanticipated npm invocation, even if npm is installed.
+mkdir -p "$run_root/git-only-bin"
+cat > "$run_root/git-only-bin/npm" <<'SH'
+#!/bin/sh
+printf '%s\n' 'Blocked unexpected registry tooling in Git-only run (npm).' >&2
+exit 86
+SH
+chmod 700 "$run_root/git-only-bin/npm"
+export PATH="$toolbin:$run_root/git-only-bin:$PATH"
 note "lean=4.33.1:$LEAN_SHA"
 note "mathlib=$MATH_SHA"
 note "rh_source=$RH_SHA"
@@ -192,8 +202,35 @@ finite_data() {
 }
 step cube_data finite_data
 
+# The pinned ProofWidgets Git tree already contains all generated widget JS.
+# Disable only the two optional frontend rebuild targets, not Lean source.
+prepare_git_only_lake() {
+  lake --no-cache env lean --version
+  local widgets=.lake/packages/proofwidgets
+  [[ $(git -C "$widgets" rev-parse HEAD) == "$WIDGETS_SHA" ]]
+  git -C "$widgets" diff --exit-code "$WIDGETS_SHA" -- widget/js
+  local asset
+  while IFS= read -r -d '' asset; do test -f "$widgets/$asset"; done \
+    < <(git -C "$widgets" ls-tree -rz --name-only "$WIDGETS_SHA" -- widget/js)
+  git -C "$widgets" show "$WIDGETS_SHA:lakefile.lean" > "$widgets/.lakefile-pinned.tmp"
+  python3 -B - "$widgets" <<'PYW'
+import pathlib, sys
+root = pathlib.Path(sys.argv[1])
+original = (root / ".lakefile-pinned.tmp").read_bytes()
+active = root / "lakefile.lean"
+old = b"  needs := #[widgetJsAll]\n"
+assert original.count(old) == 2
+tuned = original.replace(old, b"  -- Use JS assets tracked at the pinned Git commit.\n")
+assert active.read_bytes() in (original, tuned), "Unexpected ProofWidgets configuration changes"
+if active.read_bytes() != tuned:
+    active.write_bytes(tuned)
+PYW
+  rm "$widgets/.lakefile-pinned.tmp"
+}
+
 cube_deps() {
   cd "$cube"
+  prepare_git_only_lake
   lake --no-cache build +Mathlib.NumberTheory.LucasPrimality:olean +Mathlib.Tactic.Ring:olean \
     +Cryptids.Semantics.Riemann.WeightedStieltjes:olean \
     +Cryptids.Semantics.Riemann.DigammaBinet:olean +Cryptids.Semantics.Riemann.HorizontalBounds:olean
@@ -231,6 +268,7 @@ step rh_git fetch_rh
 build_rh() {
   cd "$rh"
   # Native build from pinned source, not the community build cache.
+  prepare_git_only_lake
   lake --no-cache build +Main:olean
   [[ $(git -C .lake/packages/mathlib rev-parse HEAD) == "$MATH_SHA" ]]
 }
