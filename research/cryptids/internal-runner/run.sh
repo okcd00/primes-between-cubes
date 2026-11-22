@@ -17,8 +17,8 @@ readonly DATA_SHA=fc3053b39f17074f257eda1798041a8b33c7eaa2cb72c611c7764bef9a599b
 
 case ${1:---run} in
   --probe) exec bash "$here/host-probe.sh";;
-  --run|--cube-only);;
-  *) printf 'Usage: bash run.sh [--probe|--run|--cube-only]\n' >&2; exit 2;;
+  --run|--cube-only|--prepare-shards);;
+  *) printf 'Usage: bash run.sh [--probe|--run|--cube-only|--prepare-shards]\n' >&2; exit 2;;
 esac
 mode=${1:---run}
 if [[ ${RUN_DIR:-} == /* ]]; then run_root=$RUN_DIR;
@@ -242,6 +242,19 @@ if active.read_bytes() != tuned:
 PYW
   rm "$widgets/.lakefile-pinned.tmp"
 }
+
+if [[ $mode == --prepare-shards ]]; then
+  worker_prerequisites() {
+    cd "$cube"
+    prepare_git_only_lake
+    lake --no-cache build +Mathlib.NumberTheory.LucasPrimality:olean +Mathlib.Tactic.Ring:olean
+    [[ $(git -C .lake/packages/mathlib rev-parse HEAD) == "$MATH_SHA" ]]
+  }
+  step shard_prerequisites worker_prerequisites
+  note 'native_composition=NOT_RUN'
+  note 'full_finite_replay=NOT_RUN'
+  exit 0
+fi
 
 cube_deps() {
   cd "$cube"

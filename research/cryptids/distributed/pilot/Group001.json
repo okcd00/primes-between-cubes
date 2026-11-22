@@ -1,0 +1,27 @@
+{
+  "axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "compile_seconds": 35.567,
+  "group": {
+    "id": 1,
+    "source_sha256": "c2b4ea1da7e4e9aee3a0b522683477cec17bfb27074b566d8b0810a30c0b0b57",
+    "start": 257,
+    "stop_exclusive": 513
+  },
+  "group_olean_bytes": 5769256,
+  "group_olean_sha256": "ac366e98e6b70c20c6431980abc935911d30a7eb72acb277ace48d5866a968fa",
+  "max_child_rss_kib_cumulative": 2252028,
+  "plan_sha256": "dfd99c13195612817edbc2c8abab058be16ffc60a98875c21a8641522584f21a",
+  "pratt_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "pratt_olean_sha256": "56284b2879901ec4c0fb759759d6534aabc286b563559def3f9481133a073ce9",
+  "prior_child_rss_kib_cumulative": 2152964,
+  "replayed_in_kernel_as_source": true,
+  "schema": "cube-finite-receipt-v1"
+}

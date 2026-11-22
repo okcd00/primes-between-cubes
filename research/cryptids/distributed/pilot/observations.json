@@ -1,0 +1,46 @@
+{
+  "schema": "cube-finite-pilot-observations-v1",
+  "host": {
+    "mode": "two separate worker build directories on one Linux host",
+    "physical_ram_gib_approx": 9.7,
+    "compiler_threads_per_selected_shard": 1,
+    "other_builds_running": true
+  },
+  "join": {
+    "result": "actual Lean source join of locally rebuilt and hash-matched artifacts",
+    "theorem": "CubePrime.Pratt.pilotFinitePrefix",
+    "start": 1,
+    "stop_exclusive": 513,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "untrusted_artifact_replay": false,
+    "full_finite_range_replay": false,
+    "riemann_hypothesis_replay": false
+  },
+  "controls": {
+    "duplicate_receipt_rejected": true,
+    "overlapping_modified_interval_rejected": true,
+    "split_namespace_roots_failed_before_single_root_staging": true,
+    "import_substitution_rejected_by_inert_axiom_inventory": true,
+    "modified_olean_transport_hash_rejected": true
+  },
+  "selected_transfer_bytes": [
+    {
+      "group": 0,
+      "raw_lean": 36516,
+      "zstd3_lean": 7543,
+      "raw_olean": 4669616,
+      "zstd3_olean": 986882
+    },
+    {
+      "group": 1,
+      "raw_lean": 45539,
+      "zstd3_lean": 9558,
+      "raw_olean": 5769256,
+      "zstd3_olean": 1207319
+    }
+  ]
+}
