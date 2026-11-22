@@ -1,10 +1,23 @@
 {
   "challenge_module": "CubeChallenge",
   "solution_module": "CubeWithoutHypotheses",
-  "theorem_names": ["CubePrime.primeStrictlyBetweenConsecutiveCubes"],
-  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"],
+  "theorem_names": [
+    "CubePrime.primeBetweenCubes",
+    "CubePrime.primeStrictlyBetweenConsecutiveCubes"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
   "external_kernels": {
-    "Lean paranoid": ["leanchecker-paranoid", "--silent", "--from-export"],
-    "nanoda": ["nanoda_bin"]
+    "Lean paranoid": [
+      "leanchecker-paranoid",
+      "--silent",
+      "--from-export"
+    ],
+    "nanoda": [
+      "nanoda_bin"
+    ]
   }
 }
