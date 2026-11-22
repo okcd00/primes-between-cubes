@@ -1,0 +1,102 @@
+{
+  "benchmark": {
+    "index-disk-v2": {
+      "db_bytes": 28831744,
+      "index_seconds": 4.496,
+      "input_bytes": 28783480,
+      "mode": "disk",
+      "peak_rss_kib": 22144,
+      "records_indexed": 546817,
+      "records_retained": 537507,
+      "retained_bytes": 28352530,
+      "reused_index": false,
+      "wall_seconds": 13.535
+    },
+    "index-memory": {
+      "db_bytes": 0,
+      "index_seconds": 5.623,
+      "input_bytes": 28783480,
+      "mode": "memory",
+      "peak_rss_kib": 609992,
+      "records_indexed": 546817,
+      "records_retained": 537507,
+      "retained_bytes": 28352530,
+      "wall_seconds": 8.529
+    },
+    "index-repeat": {
+      "db_bytes": 28831744,
+      "index_seconds": 0.061,
+      "input_bytes": 28783480,
+      "mode": "disk",
+      "peak_rss_kib": 20932,
+      "records_indexed": 546817,
+      "records_retained": 537507,
+      "retained_bytes": 28352530,
+      "reused_index": true,
+      "wall_seconds": 10.403
+    },
+    "index-reuse": {
+      "db_bytes": 28831744,
+      "index_seconds": 0.05,
+      "input_bytes": 28783480,
+      "mode": "disk",
+      "peak_rss_kib": 19524,
+      "records_indexed": 546817,
+      "records_retained": 16911,
+      "retained_bytes": 935632,
+      "reused_index": true,
+      "wall_seconds": 0.358
+    }
+  },
+  "group_selection_matches_official_standalone_bytes": true,
+  "independent_kernel_replayed": false,
+  "index_reuse_rejects_different_source_bytes": true,
+  "inputs": {
+    "Group000.ndjson": {
+      "bytes": 28352530,
+      "sha256": "ab7fb62a042b8d429a313bc517826233bb480f456d0f7fb9545d8481b606fd2f"
+    },
+    "Group001.ndjson": {
+      "bytes": 28443230,
+      "sha256": "40616c229d04375038d5860ac95c7e6344733a041bf5cf05c1fd65fad3b2b45b"
+    },
+    "JoinBoundary.ndjson": {
+      "bytes": 937576,
+      "sha256": "45321d719e7e681571560947d8b14842f75694428f72759ba3a2e39524b70086"
+    },
+    "PilotChallenge.ndjson": {
+      "bytes": 776720,
+      "sha256": "f6f3301c186ce427ead60a59d0efb12e08c98ff032b6c319b62ddde9d39cbc09"
+    },
+    "selected-splice.ndjson": {
+      "bytes": 935632,
+      "sha256": "fbac1e371684468064327f95f2bb4fc5643edc89c2a522b28666ea2b76cbe703"
+    },
+    "union.ndjson": {
+      "bytes": 28783480,
+      "sha256": "f616217f11e0149335f41581ef626fabe64d008e41ec0e6c524c944b77fd357b"
+    }
+  },
+  "original_RH_export_replayed": false,
+  "real_kernel_replay": [
+    "KERNEL_REPLAY_PASS proof=CubePrime.Pratt.pilotFinitePrefix declarations=7556 discharged=2",
+    "PROCESS_EXIT=0",
+    "wall_seconds=56.28",
+    "peak_child_rss_kib=1106592"
+  ],
+  "regressions": [
+    "KERNEL_REPLAY_PASS proof=SlicePilot.output declarations=5 discharged=1",
+    "REJECTED missing",
+    "REJECTED substituted",
+    "REJECTED wrong_type",
+    "REJECTED wrong_root",
+    "REJECTED wrong_type_under_allowed_name",
+    "REJECTED wrong_core_dependency",
+    "REJECTED wrong_definition_body",
+    "REJECTED ill_typed_proof_body"
+  ],
+  "schema": "cube-inert-index-pilot-v1",
+  "selected_core_kernel_replay": [
+    "KERNEL_REPLAY_PASS proof=CubePrime.Pratt.splice declarations=599 discharged=0"
+  ]
+}
