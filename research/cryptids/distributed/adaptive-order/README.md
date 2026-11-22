@@ -22,9 +22,8 @@ lines [n,p,v,R] have SHA-256
 then applies the previously checked shared-order soundness lemma at each
 tuple's root. Every row is validated with two strict bounds and a membership
 check. The root table, missing-root and wrong-interval controls, and
-Group023 have actually compiled with the stock 4.33.1 kernel. At the time
-of these pilot notes, the full clean all-adaptive group job was still running;
-do not confuse generated data or group counts with aggregate success.
+Group023 compiled with the stock 4.33.1 kernel. The full replay below
+is now separate verified evidence.
 
 ## Reproduce in the same prepared cube project
 
@@ -33,7 +32,11 @@ project (where `PrattCore.lean` and checked `PrattCore.olean` and
 `OneFactorCore.olean` are available). Pass the exact pinned `LEAN_BIN` and
 `LEAN_PATH` and use this folder's `check_adaptive.sh`. The Python scripts
 locate the existing `shared-order/render_one_factor.py` beside this folder.
-For a clean assessment, use a fresh output project. The script regenerates
+For a clean assessment, use a fresh output project. It requires `flock`
+to prevent concurrent runs in the same build. To reproduce the arithmetic-only
+sweep explicitly use `python3 -B sweep.py --roots-per-bucket 5`. The aggregate
+runner is finite-only; compile and audit `FullCubesConditionalAdaptive.lean`
+separately to establish the full conditional implication. The script regenerates
 the deterministic Lean source and compares it with any existing source tree;
 local cache markers do not attest a remote kernel run.
 
@@ -52,3 +55,20 @@ is 115,448 bytes, excluded from the per-group times/bytes. Results are
 one-observation matched statements, different witnesses, not independent
 kernel measurements or whole-range speedup. Prior art remains the same:
 large-factor progressions and Pocklington certificates are not new here.
+
+## Completed stock-kernel result
+
+All 256 groups of the new adaptive finite route compiled; no legacy Lucas
+witness group was imported. The run was interrupted after Group249 by
+a workspace restart then resumed from matching source and byte receipts.
+The aggregate `CubePrime.Adaptive.finite_cube_range` was actually built and
+passed with exactly `propext, Classical.choice, Quot.sound`; generated
+`All.lean` SHA-256 is
+`5aa1ae87ee608f9cc7531b8ac9f558101ca59248fc8797571d38c0246740d00d`.
+The separate wrapper `FullCubesConditionalAdaptive.lean` also compiled,
+with the same three axioms and explicit RH premise. The exact expanded
+conditional wrapper compiled, too. `ConditionalExactChallenge.lean`
+comes from a separate Mathlib-only project, and `AdaptiveExactSolution.lean`
+is the actual provider. They are for an independent conditional comparison,
+not an unconditional theorem. This checkpoint does not claim the independent
+comparison or the actual upstream RH integration has passed.

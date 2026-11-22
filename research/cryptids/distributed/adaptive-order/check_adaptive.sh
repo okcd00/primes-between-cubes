@@ -4,7 +4,10 @@ trap 'echo ADAPTIVE_EXIT=$?' EXIT
 here=$(cd "$(dirname "$0")" && pwd)
 export LEAN_BIN=${LEAN_BIN:-lean}
 : "${LEAN_PATH:?provide the prepared common-stack search path}"
-[[ "$("$LEAN_BIN" --version)" == *"version 4.33.1,"*"819816b2e0a3"* ]]
+[[ "$("$LEAN_BIN" --version)" == *"version 4.33.1,"*"819816b2e0a3bf405af45ae5c7af2491d8f5bee6"* ]]
+command -v flock >/dev/null || { echo "Linux flock is required for a shared output directory." >&2; exit 64; }
+exec 9> .adaptive-run.lock
+flock -n 9 || { echo "Another adaptive run owns this output directory." >&2; exit 66; }
 lib=.lake/build/lib/lean
 temp=$(mktemp -d "./.adaptive-render-XXXXXX")
 trap 'rc=$?; rm -rf -- "$temp"; echo ADAPTIVE_EXIT=$rc; exit "$rc"' EXIT
