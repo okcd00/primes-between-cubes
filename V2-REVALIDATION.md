@@ -19,6 +19,7 @@ The RH dependency fetch failed: LeanSearchClient returned an empty server respon
     cube_analytic=PASS
     cube_finite=PASS
     finite_groups=64/64
+    candidate_sha256=fc3053b39f17074f257eda1798041a8b33c7eaa2cb72c611c7764bef9a599b1d
     rh_git=PASS
     rh_build=FAIL
     exit=1
@@ -37,3 +38,5 @@ The RH dependency fetch failed: LeanSearchClient returned an empty server respon
     cube_setup=PASS
     cube_data=PASS
     cube_dependencies=PASS
+
+Only allowlisted verification evidence is recorded here; raw logs remain on the internal machine.
