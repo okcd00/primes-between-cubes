@@ -38,5 +38,32 @@ The RH dependency fetch failed: LeanSearchClient returned an empty server respon
     cube_setup=PASS
     cube_data=PASS
     cube_dependencies=PASS
+    cube_analytic=PASS
+
+## Selected axiom audit evidence
+
+    'ConjectureMachines.Semantics.Riemann.VonMangoldtCount.weightedZeroCountingFunction_le_sixteen_fifths' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'ConjectureMachines.Semantics.Riemann.WeightedStieltjes.psi1_eq_sum_Icc_sub_mul_vonMangoldt' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'ConjectureMachines.Semantics.Riemann.WeightedStieltjes.sum_weighted_inv_sq_nontrivialZetaZerosBetween_le_of_riemannVonMangoldt' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'ConjectureMachines.Semantics.Riemann.WeightedStieltjes.abs_psi1_sub_main_add_log_two_pi_sub_zeroSum_le_of_neg' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'ConjectureMachines.Semantics.Riemann.WeightedStieltjes.contourLeftVerticalError_neg_one_fourth_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'ConjectureMachines.Semantics.Riemann.WeightedStieltjes.exists_zero_free_height_with_small_tailAndHorizontal' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'ConjectureMachines.Semantics.Riemann.DigammaBinet.norm_logDeriv_riemannZeta_leftVertical_le_eighty_five' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'ConjectureMachines.Semantics.Riemann.HorizontalBounds.exists_zero_free_height_with_log_pow_five_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.triangle_explicit_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.cube_triangle_budget' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.cube_triangle_budget_mathlib' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.cube_vertical_budget' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.prime_of_large_triangle' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.psi1_second_diff_eq_triangular_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.norm_weighted_head_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.exists_triangle_remainder_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.triangle_remainder_le_of_common_height' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.Pointwise.second_diff_small' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.Pointwise.second_diff_large_ordinate' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.triangle_residue_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.prime_between_large_nat_cubes_of_RH' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.cube_triangle_estimates' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.prime_between_large_cubes_of_RH' depends on axioms: [propext, Classical.choice, Quot.sound]
 
 Only allowlisted verification evidence is recorded here; raw logs remain on the internal machine.
