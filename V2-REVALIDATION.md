@@ -39,6 +39,9 @@ The RH dependency fetch failed: LeanSearchClient returned an empty server respon
     cube_data=PASS
     cube_dependencies=PASS
     cube_analytic=PASS
+    cube_finite=PASS
+    finite_groups=64/64
+    candidate_sha256=fc3053b39f17074f257eda1798041a8b33c7eaa2cb72c611c7764bef9a599b1d
 
 ## Selected axiom audit evidence
 
@@ -65,5 +68,8 @@ The RH dependency fetch failed: LeanSearchClient returned an empty server respon
     'CubePrime.prime_between_large_nat_cubes_of_RH' depends on axioms: [propext, Classical.choice, Quot.sound]
     'CubePrime.cube_triangle_estimates' depends on axioms: [propext, Classical.choice, Quot.sound]
     'CubePrime.prime_between_large_cubes_of_RH' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.Pratt.checkBatch_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.Pratt.finite_cube_range' depends on axioms: [propext, Classical.choice, Quot.sound]
+    'CubePrime.primeBetweenCubes_of_RH' depends on axioms: [propext, Classical.choice, Quot.sound]
 
 Only allowlisted verification evidence is recorded here; raw logs remain on the internal machine.
