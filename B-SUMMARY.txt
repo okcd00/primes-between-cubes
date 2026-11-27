@@ -6,5 +6,7 @@ stage=stage_old_challenge exit=64
 old_challenge_sha256=bd484ac9886a96f26b1d9a7a59ebd45b7a70d102c015d4f31f9302bbdd6ab2b9
 old_challenge_actual_bytes=350862311
 old_challenge_script_expected_bytes=350862970
-old_comparison=NOT_RUN
+old_length_patch=350862970_to_350862311
+corrected_input_sha256=PASS
+old_comparison=RUNNING
 same_version_control=NOT_RUN
