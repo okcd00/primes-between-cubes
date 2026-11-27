@@ -8,5 +8,7 @@ old_challenge_actual_bytes=350862311
 old_challenge_script_expected_bytes=350862970
 old_length_patch=350862970_to_350862311
 corrected_input_sha256=PASS
-old_comparison=RUNNING
-same_version_control=NOT_RUN
+old_checker_exit=1
+old_error=riemannHypothesis type depends on CauSeq.Completion.Cauchy declared differently
+old_comparison=NOT_ACCEPTED
+control_input=RUNNINGsame_version_control=NOT_RUN
