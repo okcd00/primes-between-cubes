@@ -124,7 +124,7 @@ if [[ -n ${RH_PINNED_CUBE_BRIDGE:-} ]]; then
   want=riemannHypothesis
   record 'old_challenge=exact_pinned_cube_bridge'
 else
-  stage_file old.ndjson https://math.mit.edu/~drew/grh/challenge.ndjson.zst 350862970 "$old_sha" "${RH_OLD_UNPACKED:-}"
+  stage_file old.ndjson https://math.mit.edu/~drew/grh/challenge.ndjson.zst 350862311 "$old_sha" "${RH_OLD_UNPACKED:-}"
   want=$roots
   record 'old_challenge=MIT_original_five_roots'
 fi
