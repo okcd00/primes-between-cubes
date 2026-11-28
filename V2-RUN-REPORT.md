@@ -82,7 +82,7 @@ same_version_control=PASS
 
 ## C 原生合成
 
-**RUNNING**：缓存准备已完成（退出码 0，下载并解压 9,031 个文件）；实际 `BoundSolution` 依赖构建已启动，尚无退出码，立方定理合成及公理审计尚未运行。C 构建限于两个 CPU，并配置内存保护以优先保障 A。固定 C 线提交 `642830bf082e5e6862e79a1b82ee1cd9e8d256e7` 已检出；MIT 配方包 SHA-256 `0c1fcdea71d15fa40abfadda964e654eddb1961596f095335314a14cb1d62ee6` 核对通过。目标版本：Lean 4.35.0 `eb6cafb7290e8bd5f2937522d8d804f58f02bafc`、Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`、紧凑 RH `72fead102f663d5c7a407964a13dc0cf9d977207`、Schoenfeld `0e52d7b1a83fb548f6395546828a923a2e3d9627`。工具链下载及校验 PASS，下载和解压退出码均为 0；实际 Lean 版本及提交已核对。两项源码固定提交与洁净状态核对通过。独立 Mathlib 依赖和缓存准备 PASS（续跑退出 0）；资源复测后已启动原生依赖构建。首次缓存下载中静态 curl 报 OpenSSL TLS 初始化错误（单项诊断退出 35）；原进程已停止，指定系统现有证书包后单项请求返回 HTTP 200、退出 0，并在同一独立缓存中续跑。续跑已成功下载并解包缓存文件，退出码 0。
+**RUNNING**：缓存准备已完成（退出码 0，下载并解压 9,031 个文件）；实际 `BoundSolution` 依赖构建已启动，尚无退出码，立方定理合成及公理审计尚未运行。C 构建限于两个 CPU，并配置内存保护以优先保障 A。上游 `Statements` 和 `Lib.General.LinearAlgebra.Base` 编译时提示导入 Mathlib 的文件可声明 `module`；两模块已构建，整体尚无退出码，后续继续检查警告及公理。固定 C 线提交 `642830bf082e5e6862e79a1b82ee1cd9e8d256e7` 已检出；MIT 配方包 SHA-256 `0c1fcdea71d15fa40abfadda964e654eddb1961596f095335314a14cb1d62ee6` 核对通过。目标版本：Lean 4.35.0 `eb6cafb7290e8bd5f2937522d8d804f58f02bafc`、Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`、紧凑 RH `72fead102f663d5c7a407964a13dc0cf9d977207`、Schoenfeld `0e52d7b1a83fb548f6395546828a923a2e3d9627`。工具链下载及校验 PASS，下载和解压退出码均为 0；实际 Lean 版本及提交已核对。两项源码固定提交与洁净状态核对通过。独立 Mathlib 依赖和缓存准备 PASS（续跑退出 0）；资源复测后已启动原生依赖构建。首次缓存下载中静态 curl 报 OpenSSL TLS 初始化错误（单项诊断退出 35）；原进程已停止，指定系统现有证书包后单项请求返回 HTTP 200、退出 0，并在同一独立缓存中续跑。续跑已成功下载并解包缓存文件，退出码 0。
 
 ## C 独立复验
 
