@@ -82,7 +82,7 @@ same_version_control=PASS
 
 ## C 原生合成
 
-**NOT_RUN**：独立准备进行中，原生编译尚未启动，暂无退出码。固定 C 线提交 `642830bf082e5e6862e79a1b82ee1cd9e8d256e7` 已检出；MIT 配方包 SHA-256 `0c1fcdea71d15fa40abfadda964e654eddb1961596f095335314a14cb1d62ee6` 核对通过。目标版本：Lean 4.35.0 `eb6cafb7290e8bd5f2937522d8d804f58f02bafc`、Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`、紧凑 RH `72fead102f663d5c7a407964a13dc0cf9d977207`、Schoenfeld `0e52d7b1a83fb548f6395546828a923a2e3d9627`。工具链与源码正在独立下载；完成并验证版本后复测资源，再决定启动编译。
+**NOT_RUN**：独立准备进行中，原生编译尚未启动，暂无退出码。固定 C 线提交 `642830bf082e5e6862e79a1b82ee1cd9e8d256e7` 已检出；MIT 配方包 SHA-256 `0c1fcdea71d15fa40abfadda964e654eddb1961596f095335314a14cb1d62ee6` 核对通过。目标版本：Lean 4.35.0 `eb6cafb7290e8bd5f2937522d8d804f58f02bafc`、Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`、紧凑 RH `72fead102f663d5c7a407964a13dc0cf9d977207`、Schoenfeld `0e52d7b1a83fb548f6395546828a923a2e3d9627`。工具链下载及校验 PASS，下载和解压退出码均为 0；实际 Lean 版本及提交已核对。两项源码固定提交与洁净状态核对通过。独立 Mathlib 依赖和缓存准备 RUNNING，完成后复测资源，再决定启动原生编译。
 
 ## C 独立复验
 
