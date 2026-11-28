@@ -11,4 +11,8 @@ corrected_input_sha256=PASS
 old_checker_exit=1
 old_error=riemannHypothesis type depends on CauSeq.Completion.Cauchy declared differently
 old_comparison=NOT_ACCEPTED
-control_input=RUNNINGsame_version_control=NOT_RUN
+control_input=FAIL
+control_input_exit=1
+control_download_error=curl_timeout_28
+control_download_retry=RUNNING
+same_version_control=NOT_RUN
